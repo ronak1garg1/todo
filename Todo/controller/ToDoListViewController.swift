@@ -13,6 +13,7 @@ import RealmSwift
 class ToDoListViewController: UITableViewController {
     
     let realm = try! Realm()  //initiliase Realm
+    
     var todoItems: Results<ToDoModel>?  //initiliase todoItems
     
     var selectedCategory : Category? {
@@ -48,11 +49,11 @@ class ToDoListViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if let k = todoItems?[indexPath.row]{
+        if let todoItems1 = todoItems?[indexPath.row]{
             
             do{
                 try realm.write {
-                   k.done = !k.done
+                   todoItems1.done = !todoItems1.done
                  //   realm.delete(k)
                 }
             }
@@ -75,13 +76,13 @@ class ToDoListViewController: UITableViewController {
             (action) in
             
             
-            if let s = self.selectedCategory{
+            if let currentCategory = self.selectedCategory{
                 do{
                     try self.realm.write {
                         let newItem = ToDoModel()
                         newItem.data = textField.text!
                         newItem.date = Date()
-                        s.list.append(newItem)   //will append the newItem in the list property of the category object
+                        currentCategory.list.append(newItem)   //will append the newItem in the list property of the category object
                     }
                 } catch{
                     print(error)
